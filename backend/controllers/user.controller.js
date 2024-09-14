@@ -122,7 +122,7 @@ export const updateUser = async (req, res) => {
 
 		if (profileImg) {
 			if (user.profileImg) {
-                // delete old image
+                // to delete old image
 				// https://res.cloudinary.com/dyfqon1v6/image/upload/v1712997552/zmxorcxexpdbh8r0bkjb.png
 				await cloudinary.uploader.destroy(user.profileImg.split("/").pop().split(".")[0]);
 			}
