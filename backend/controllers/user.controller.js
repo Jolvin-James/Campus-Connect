@@ -19,8 +19,6 @@ export const getUserProfile = async (req, res) => {
 	}
 };
 
-
-// check the connect and disconnect part instead of followers and ....
 export const followUnfollowUser = async (req, res) => {
 	try {
 		const { id } = req.params;
@@ -32,7 +30,6 @@ export const followUnfollowUser = async (req, res) => {
 		}
 
 		if (!userToModify || !currentUser) return res.status(400).json({ error: "User not found" });
-
 
 		const isFollowing = currentUser.following.includes(id);
 
@@ -73,16 +70,14 @@ export const getSuggestedUsers = async (req, res) => {
 
 		const users = await User.aggregate([
 			{
-                // we are removing ourselves from recommendation and the ones i followed
 				$match: {
 					_id: { $ne: userId },
 				},
 			},
-            // we would like to get 10 diff users and not authenticated users
 			{ $sample: { size: 10 } },
 		]);
 
-        // filter the non followed users
+		// 1,2,3,4,5,6,
 		const filteredUsers = users.filter((user) => !usersFollowedByMe.following.includes(user._id));
 		const suggestedUsers = filteredUsers.slice(0, 4);
 
@@ -97,7 +92,7 @@ export const getSuggestedUsers = async (req, res) => {
 
 export const updateUser = async (req, res) => {
 	const { fullName, email, username, currentPassword, newPassword, bio, link } = req.body;
-	let { profileImg } = req.body;
+	let { profileImg, coverImg } = req.body;
 
 	const userId = req.user._id;
 
@@ -122,7 +117,6 @@ export const updateUser = async (req, res) => {
 
 		if (profileImg) {
 			if (user.profileImg) {
-                // to delete old image
 				// https://res.cloudinary.com/dyfqon1v6/image/upload/v1712997552/zmxorcxexpdbh8r0bkjb.png
 				await cloudinary.uploader.destroy(user.profileImg.split("/").pop().split(".")[0]);
 			}
@@ -131,15 +125,14 @@ export const updateUser = async (req, res) => {
 			profileImg = uploadedResponse.secure_url;
 		}
 
-        // for cover image
-		// if (coverImg) {
-		// 	if (user.coverImg) {
-		// 		await cloudinary.uploader.destroy(user.coverImg.split("/").pop().split(".")[0]);
-		// 	}
+		if (coverImg) {
+			if (user.coverImg) {
+				await cloudinary.uploader.destroy(user.coverImg.split("/").pop().split(".")[0]);
+			}
 
-		// 	const uploadedResponse = await cloudinary.uploader.upload(coverImg);
-		// 	coverImg = uploadedResponse.secure_url;
-		// }
+			const uploadedResponse = await cloudinary.uploader.upload(coverImg);
+			coverImg = uploadedResponse.secure_url;
+		}
 
 		user.fullName = fullName || user.fullName;
 		user.email = email || user.email;
@@ -147,7 +140,7 @@ export const updateUser = async (req, res) => {
 		user.bio = bio || user.bio;
 		user.link = link || user.link;
 		user.profileImg = profileImg || user.profileImg;
-		// user.coverImg = coverImg || user.coverImg;
+		user.coverImg = coverImg || user.coverImg;
 
 		user = await user.save();
 

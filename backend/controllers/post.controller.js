@@ -5,15 +5,15 @@ import { v2 as cloudinary } from "cloudinary";
 
 export const createPost = async (req, res) => {
 	try {
-		const { title, text } = req.body;
+		const { text } = req.body;
 		let { img } = req.body;
 		const userId = req.user._id.toString();
 
 		const user = await User.findById(userId);
 		if (!user) return res.status(404).json({ message: "User not found" });
 
-		if (!title && !text && !img) {
-			return res.status(400).json({ error: "Post must have title, text or image" });
+		if (!text && !img) {
+			return res.status(400).json({ error: "Post must have text or image" });
 		}
 
 		if (img) {
@@ -23,7 +23,6 @@ export const createPost = async (req, res) => {
 
 		const newPost = new Post({
 			user: userId,
-            title,
 			text,
 			img,
 		});
@@ -127,7 +126,6 @@ export const likeUnlikePost = async (req, res) => {
 	}
 };
 
-// getting all posts that are available 
 export const getAllPosts = async (req, res) => {
 	try {
 		const posts = await Post.find()
@@ -152,7 +150,6 @@ export const getAllPosts = async (req, res) => {
 	}
 };
 
-// not required
 export const getLikedPosts = async (req, res) => {
 	const userId = req.params.id;
 
@@ -177,7 +174,6 @@ export const getLikedPosts = async (req, res) => {
 	}
 };
 
-// getting only the posts of whom we followed
 export const getFollowingPosts = async (req, res) => {
 	try {
 		const userId = req.user._id;
@@ -204,7 +200,6 @@ export const getFollowingPosts = async (req, res) => {
 	}
 };
 
-// get the posts we posted
 export const getUserPosts = async (req, res) => {
 	try {
 		const { username } = req.params;
