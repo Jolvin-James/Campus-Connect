@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-const useFollow = () => {
+const useConnect = () => {
   const queryClient = useQueryClient(); // Corrected name here
-  const { mutate: follow, isPending } = useMutation({
+  const { mutate: connect, isPending } = useMutation({
     mutationFn: async (userId) => {
       try {
         const res = await fetch(`/api/users/follow/${userId}`, { // Corrected userId
@@ -29,7 +29,7 @@ const useFollow = () => {
       toast.error(error.message);
     },
   });
-  return { follow, isPending };
+  return { connect, isPending };
 };
 
-export default useFollow;
+export default useConnect;
