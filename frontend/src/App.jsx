@@ -9,7 +9,7 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import Sidebar from "./components/common/Sidebar";
 import RightPanel from "./components/common/RightPanel";
 import ChatPage from "./pages/chat/ChatPage";
-
+import Coverpage from "./pages/coverpage/coverpage";
 import { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "./components/common/LoadingSpinner";
@@ -49,12 +49,14 @@ function App() {
 			{/* Common component, bc it's not wrapped with Routes */}
 			{authUser && <Sidebar />}
 			<Routes>
-				<Route path='/' element={authUser ? <HomePage /> : <Navigate to='/login' />} />
+				<Route path='/' element={<Coverpage />} />
+				<Route path='/home' element={authUser ? <HomePage /> : <Navigate to='/login' />} />
+				{/* <Route path='/' element={authUser ? <HomePage /> : <Navigate to='/login' />} /> */}
 				<Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to='/' />} />
 				<Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to='/' />} />
 				<Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to='/login' />} />
 				<Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to='/login' />} />
-        <Route path='/chat' element={authUser ? <ChatPage /> : <Navigate to='/login' />} />
+        		<Route path='/chat' element={authUser ? <ChatPage /> : <Navigate to='/login' />} />
       </Routes>
 			{authUser && <RightPanel />}
 			<Toaster />
