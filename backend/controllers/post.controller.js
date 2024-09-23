@@ -5,6 +5,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 export const createPost = async (req, res) => {
 	try {
+		const { title } = req.body;
 		const { text } = req.body;
 		let { img } = req.body;
 		const userId = req.user._id.toString();
@@ -12,8 +13,8 @@ export const createPost = async (req, res) => {
 		const user = await User.findById(userId);
 		if (!user) return res.status(404).json({ message: "User not found" });
 
-		if (!text && !img) {
-			return res.status(400).json({ error: "Post must have text or image" });
+		if (!title && !text && !img) {
+			return res.status(400).json({ error: "Post must have title, text or image" });
 		}
 
 		if (img) {
@@ -23,6 +24,7 @@ export const createPost = async (req, res) => {
 
 		const newPost = new Post({
 			user: userId,
+			title,
 			text,
 			img,
 		});
