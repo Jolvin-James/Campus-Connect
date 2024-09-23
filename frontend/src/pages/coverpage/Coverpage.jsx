@@ -31,7 +31,7 @@ const Coverpage = () => {
       <nav className="fixed w-full z-50 flex justify-between items-center py-6 px-16 bg-base-200">
         <div className="text-2xl font-bold">Campus Connect</div>
         <ul className="flex gap-6">
-          {['home', 'features', 'contact', 'faq'].map((section) => (
+          {['home', 'features', 'faq'].map((section) => (
             <li key={section}>
               <Link
                 to={section}
@@ -148,45 +148,11 @@ const Coverpage = () => {
         </div>
       </section>
 
-      {/* Contact Us Section */}
-      <section id="contact" className="py-16 px-16">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold">Contact Us</h2>
-        </div>
-        <div>
-          <form className="p-6 rounded-lg shadow-lg bg-base-200">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <input type="text" placeholder="Your Name" className="input input-bordered w-full p-2 rounded" />
-              <input type="email" placeholder="Your Email" className="input input-bordered w-full p-2 rounded" />
-            </div>
-            <textarea
-              placeholder="Your Message"
-              className="textarea textarea-bordered w-full p-2 rounded mb-4"
-              rows="4"
-            ></textarea>
-            <button type="submit" className="btn btn-primary w-full">
-              Send Message
-            </button>
-          </form>
-        </div>
-      </section>
-
-      {/* Footer Section */}
+        {/* Footer Section */}
       <footer className="py-10 bg-base-300">
         <div className="text-center">
           <p className="text-sm">&copy; 2024 Campus Connect. All rights reserved.</p>
-          <div className="flex justify-center mt-4 gap-4">
-            <a href="#features" className="hover:text-primary">
-              Features
-            </a>
-            <a href="#contact" className="hover:text-primary">
-              Contact
-            </a>
-            <a href="#faq" className="hover:text-primary">
-              FAQ
-            </a>
           </div>
-        </div>
       </footer>
     </div>
   );

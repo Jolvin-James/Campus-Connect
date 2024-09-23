@@ -49,7 +49,7 @@ function App() {
 			{/* Common component, bec it's not wrapped with Routes */}
 			{authUser && <Sidebar />}
 			<Routes>
-				<Route path='/' element={authUser ? <Coverpage /> : <Navigate to='/login' />} />
+				<Route path='/' element={<Coverpage /> } />
 				<Route path='/home' element={authUser ? <HomePage /> : <Navigate to='/login' />} />
 				{/* <Route path='/' element={authUser ? <HomePage /> : <Navigate to='/login' />} /> */}
 				<Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to='/home' />} />
