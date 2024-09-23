@@ -9,7 +9,7 @@ import { POSTS } from "../../utils/db/dummy";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaLink } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
-import useConnect from "../../hooks/useConnect";
+import useFollow from "../../hooks/useFollow";
 
 const ProfilePage = () => {
   const [profileImg, setProfileImg] = useState(null);
@@ -19,7 +19,7 @@ const ProfilePage = () => {
 
   const { username } = useParams();
   const queryClient = useQueryClient();
-  const {connect, isPending } = useConnect();
+  const {follow, isPending } = useFollow();
   const { data: authUser } = useQuery({
     queryKey: ["authUser"],
   });
@@ -72,7 +72,7 @@ const ProfilePage = () => {
   });
 
   const isMyProfile = authUser && user && authUser._id === user?._id;
-  const amIConnecting = authUser?.following.includes(user?._id);
+  const amIFollowing = authUser?.following.includes(user?._id);
 
   const handleImgChange = (e) => {
     const file = e.target.files[0];
@@ -146,8 +146,8 @@ const ProfilePage = () => {
                     onClick={() => follow(user?._id)}
                   >
                     {isPending && "Loading..."}
-                    {!isPending && amIConnecting && "Disconnect"}
-                    {!isPending && !amIConnecting && "Connect"}
+                    {!isPending && amIFollowing && "UnFollow"}
+                    {!isPending && !amIFollowing && "Follow"}
                   </button>
                 )}
                 {profileImg && (
