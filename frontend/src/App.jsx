@@ -8,6 +8,7 @@ import ProfilePage from "./pages/profile/ProfilePage";
 
 import Sidebar from "./components/common/Sidebar";
 import RightPanel from "./components/common/RightPanel";
+import ChatPage from "./pages/chat/ChatPage";
 
 import { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
@@ -18,6 +19,7 @@ function App() {
 		// we use queryKey to give a unique name to our query and refer to it later
 		queryKey: ["authUser"],
 		queryFn: async () => {
+			const token = localStorage.getItem("token");
 			try {
 				const res = await fetch("/api/auth/me");
 				const data = await res.json();
@@ -52,7 +54,8 @@ function App() {
 				<Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to='/' />} />
 				<Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to='/login' />} />
 				<Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to='/login' />} />
-			</Routes>
+        <Route path='/chat' element={authUser ? <ChatPage /> : <Navigate to='/login' />} />
+      </Routes>
 			{authUser && <RightPanel />}
 			<Toaster />
 		</div>
