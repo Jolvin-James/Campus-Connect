@@ -6,7 +6,7 @@ const RightPanel = () => {
 	const isLoading = false;
 
 	return (
-		<div className='hidden lg:block my-4 mx-2'>
+		<div className='hidden lg:block my-4 mx-2 ' style={{ width: '18%' }}>
 			<div className='bg-[#16181C] p-4 rounded-md sticky top-2'>
 				<p className='mb-4 font-bold'>Suggested connections</p>
 				<div className='flex flex-col gap-4'>

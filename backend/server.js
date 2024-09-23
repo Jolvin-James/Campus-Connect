@@ -8,9 +8,9 @@ import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
 import postRoutes from "./routes/post.route.js";
 import notificationRoutes from "./routes/notification.route.js";
-
+import messageRoutes from "./routes/message.routes.js";
 import connectMongoDB from "./db/connectMongoDB.js";
-
+import { app, server } from "./socket/socket.js";
 dotenv.config();
 
 cloudinary.config({
@@ -19,7 +19,7 @@ cloudinary.config({
 	api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const app = express();
+//const app = express();
 const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve();
 
@@ -33,6 +33,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/messages", messageRoutes);
+
+app.get("/", (req, res) => {
+    res.send("Socket.IO server is running");
+});
 
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "/frontend/dist")));
@@ -42,7 +47,7 @@ if (process.env.NODE_ENV === "production") {
 	});
 }
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
 	connectMongoDB();
 });
