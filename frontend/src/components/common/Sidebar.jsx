@@ -36,13 +36,13 @@ const Sidebar = () => {
 	return (
 		<div className='md:flex-[2_2_0] w-18 max-w-52'>
 			<div className='sticky top-0 left-0 h-screen flex flex-col border-r border-gray-700 w-20 md:w-full'>
-				<Link to='/' className='flex justify-center md:justify-start'>
+				<Link to='/home' className='flex justify-center md:justify-start'>
 					<h1 className='text-2xl font-bold text-white px-2'>Campus Connect</h1>
 				</Link>
 				<ul className='flex flex-col gap-3 mt-4'>
 					<li className='flex justify-center md:justify-start'>
 						<Link
-							to='/'
+							to='/home'
 							className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
 						>
 							<MdHomeFilled className='w-8 h-8' />
