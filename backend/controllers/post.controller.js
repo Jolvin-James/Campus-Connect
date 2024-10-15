@@ -5,7 +5,6 @@ import { v2 as cloudinary } from "cloudinary";
 
 export const createPost = async (req, res) => {
 	try {
-		const { title } = req.body;
 		const { text } = req.body;
 		let { img } = req.body;
 		const userId = req.user._id.toString();
@@ -13,8 +12,8 @@ export const createPost = async (req, res) => {
 		const user = await User.findById(userId);
 		if (!user) return res.status(404).json({ message: "User not found" });
 
-		if (!title && !text && !img) {
-			return res.status(400).json({ error: "Post must have title, text or image" });
+		if (!text && !img) {
+			return res.status(400).json({ error: "Post must have text or image" });
 		}
 
 		if (img) {
@@ -24,7 +23,6 @@ export const createPost = async (req, res) => {
 
 		const newPost = new Post({
 			user: userId,
-			title,
 			text,
 			img,
 		});
@@ -106,7 +104,9 @@ export const likeUnlikePost = async (req, res) => {
 			// Unlike post
 			await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
 			await User.updateOne({ _id: userId }, { $pull: { likedPosts: postId } });
-			res.status(200).json({ message: "Post unliked successfully" });
+
+			const updatedLikes = post.likes.filter((id) => id.toString() !== userId.toString());
+			res.status(200).json(updatedLikes);
 		} else {
 			// Like post
 			post.likes.push(userId);
@@ -120,7 +120,8 @@ export const likeUnlikePost = async (req, res) => {
 			});
 			await notification.save();
 
-			res.status(200).json({ message: "Post liked successfully" });
+			const updatedLikes = post.likes;
+			res.status(200).json(updatedLikes);
 		}
 	} catch (error) {
 		console.log("Error in likeUnlikePost controller: ", error);
