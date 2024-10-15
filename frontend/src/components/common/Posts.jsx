@@ -37,6 +37,7 @@ const Posts = ({ feedType }) => {
 
 	return (
 		<>
+			{/* Uncomment this to show loading skeletons */}
 			{/* {isLoading && (
 				<div className='flex flex-col justify-center'>
 					<PostSkeleton />
@@ -47,7 +48,7 @@ const Posts = ({ feedType }) => {
 			{!isLoading && posts?.length === 0 && <p className='text-center my-4'>No posts in this tab. Switch 👻</p>}
 			{!isLoading && posts && (
 				<div>
-					{posts.map((post) => (
+					{posts.slice(0, 10).map((post) => ( // Limit to 10 posts
 						<Post key={post._id} post={post} />
 					))}
 				</div>
@@ -55,4 +56,5 @@ const Posts = ({ feedType }) => {
 		</>
 	);
 };
+
 export default Posts;
