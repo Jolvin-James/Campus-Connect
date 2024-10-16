@@ -1,12 +1,11 @@
-// File: backend/seed.js
-
 import mongoose from 'mongoose';
-import { faker } from '@faker-js/faker';
+import casual from 'casual';
 import User from './models/user.model.js';
 import Post from './models/post.model.js';
 import dotenv from 'dotenv';
 import connectMongoDB from './db/connectMongoDB.js';
 
+// Load environment variables
 dotenv.config({ path: '../.env' });
 
 // Connect to MongoDB
@@ -20,16 +19,16 @@ const generateUsersAndPosts = async () => {
     for (let i = 0; i < 46; i++) {
       users.push(
         new User({
-          username: faker.internet.userName(),
-          fullName: faker.person.fullName(),
-          email: faker.internet.email(),
-          password: faker.internet.password(), // Random password, could use hashed for real apps
-          profileImg: faker.image.avatar(), // Random avatar URL
-          coverImg: faker.image.url(),
-          bio: faker.lorem.sentence(),
-          link: faker.internet.url(),
-          gender: faker.helpers.arrayElement(['male', 'female', 'other']),
-          age: faker.number.int({ min: 18, max: 65 }),
+          username: casual.username,
+          fullName: casual.full_name, // Generates a full name
+          email: casual.email,
+          password: casual.password, // Random password; consider hashing for production
+          profileImg: casual.avatar, // Random avatar URL
+          coverImg: casual.image, // Random image URL
+          bio: casual.sentences(1)[0], // Bio in English (first sentence)
+          link: casual.url,
+          gender: casual.random_element(['male', 'female', 'other']),
+          age: casual.integer(18, 65), // Random age between 18 and 65
           followers: [],
           following: [],
           likedPosts: []
@@ -46,12 +45,12 @@ const generateUsersAndPosts = async () => {
       const randomUser = createdUsers[Math.floor(Math.random() * createdUsers.length)];
       posts.push(
         new Post({
-          user: randomUser._id, // Associate post with random user
-          title: faker.lorem.sentence(), // Random title
-          text: faker.lorem.paragraphs(), // Random content
-          img: faker.image.url(), // Random image URL
-          likes: [], // No likes initially
-          comments: [], // No comments initially
+          user: randomUser._id,
+          title: casual.title, // Random title in English
+          text: casual.sentences(3).join(' '), // Content in English with 3 sentences
+          img: casual.image,
+          likes: [],
+          comments: [],
         })
       );
     }
@@ -69,12 +68,13 @@ const generateUsersAndPosts = async () => {
       for (let i = 0; i < numberOfComments; i++) {
         const randomUser = createdUsers[Math.floor(Math.random() * createdUsers.length)];
         post.comments.push({
-          text: faker.lorem.sentence(),
+          text: casual.sentence, // Comment text in English
           user: randomUser._id,
         });
       }
       await post.save();
     }
+
     console.log(`${createdPosts.length} posts updated with likes and comments`);
 
     // Add liked posts to users
@@ -84,6 +84,7 @@ const generateUsersAndPosts = async () => {
       user.likedPosts = likedPosts.map(post => post._id);
       await user.save();
     }
+    
   } catch (error) {
     console.error('Error during seeding:', error);
   } finally {
