@@ -62,7 +62,7 @@ const Posts = ({ feedType, username, userId }) => {
 			)}
 			{!isLoading && !isRefetching && posts && (
 				<div>
-					{posts.map((post) => (
+					{posts.slice(0, 10).map((post) => ( // Limit to 10 posts
 						<Post key={post._id} post={post} />
 					))}
 				</div>
@@ -70,4 +70,5 @@ const Posts = ({ feedType, username, userId }) => {
 		</>
 	);
 };
+
 export default Posts;
