@@ -3,7 +3,7 @@ import { useState } from "react";
 
 // Importing from react icons
 import { MdOutlineMail } from "react-icons/md";
-import { FaUser, FaBirthdayCake } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { MdPassword } from "react-icons/md";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { useMutation } from "@tanstack/react-query";
@@ -15,19 +15,17 @@ const SignUpPage = () => {
 		username: "",
 		fullName: "",
 		password: "",
-		age:"",
-		gender:"",
 	});
 
 	const { mutate, isError, isPending, error } = useMutation({
-		mutationFn: async ({ email, username, fullName, password, age, gender }) => {
+		mutationFn: async ({ email, username, fullName, password }) => {
 			try {
 				const res = await fetch("/api/auth/signup", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({ email, username, fullName, password, age: Number(age), gender }),
+					body: JSON.stringify({ email, username, fullName, password }),
 				});
 
 				const data = await res.json();
@@ -108,32 +106,6 @@ const SignUpPage = () => {
 							onChange={handleInputChange}
 							value={formData.password}
 						/>
-					</label>
-					<label className='input input-bordered rounded flex items-center gap-2'>
-						<FaBirthdayCake />
-						<input
-							type='number'
-							className='grow'
-							placeholder='Age'
-							name='age'
-							onChange={handleInputChange}
-							value={formData.age}
-						/>
-					</label>
-					<label className='input input-bordered rounded flex items-center gap-2'>
-						<select
-							className='grow'
-							name='gender'
-							onChange={handleInputChange}
-							value={formData.gender}
-						>
-							<option value='' disabled>
-								Select Gender
-							</option>
-							<option value='male'>Male</option>
-							<option value='female'>Female</option>
-							<option value='other'>Other</option>
-						</select>
 					</label>
 					<button className='btn rounded-full btn-primary text-white'>
 						{isPending ? "Loading..." : "Sign up"}

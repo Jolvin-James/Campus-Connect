@@ -21,15 +21,6 @@ const userSchema = new mongoose.Schema(
 			required: true,
 			unique: true,
 		},
-		gender: {
-			type: String,
-			enum: ["male", "female", "other"],
-			default: "other",
-		},
-		age: {
-			type: Number,
-			min: 0,
-		},
 		followers: [
 			{
 				type: mongoose.Schema.Types.ObjectId,

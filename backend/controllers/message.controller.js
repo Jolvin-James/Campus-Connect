@@ -1,5 +1,4 @@
 import Conversation from "../models/conversation.model.js";
-import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
 import { getReceiverSocketId, io } from "../socket/socket.js"; 
 
@@ -64,23 +63,3 @@ export const getMessages = async (req, res) => {
         return res.status(500).json({ error: "Internal Server Error" });
     }
 }
-
-export const getConversations = async (req, res) => {
-    try {
-        const userId = req.user._id; // Assuming you have user authentication in place
-
-        // Fetch the user's followers
-        const user = await User.findById(userId).populate('followers');
-        const followerIds = user.followers.map(follower => follower._id);
-
-        // Fetch conversations where the user is a participant and the other participant is a follower
-        const conversations = await Conversation.find({
-            participants: { $all: [userId, { $in: followerIds }] },
-        }).populate('messages');
-
-        res.status(200).json(conversations);
-    } catch (error) {
-        console.log("Error in getConversations controller", error.message);
-        return res.status(500).json({ error: "Internal Server Error" });
-    }
-};
