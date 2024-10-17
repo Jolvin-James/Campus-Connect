@@ -5,6 +5,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 export const createPost = async (req, res) => {
 	try {
+		const { title } = req.body;
 		const { text } = req.body;
 		let { img } = req.body;
 		const userId = req.user._id.toString();
@@ -23,8 +24,10 @@ export const createPost = async (req, res) => {
 
 		const newPost = new Post({
 			user: userId,
+			title,
 			text,
 			img,
+			likes: [],
 		});
 
 		await newPost.save();
@@ -140,6 +143,13 @@ export const getAllPosts = async (req, res) => {
 			.populate({
 				path: "comments.user",
 				select: "-password",
+			})
+			
+
+			posts.forEach(post => {
+				if (!post.likes) {
+					post.likes = []; // Initialize likes as an empty array if undefined
+				}
 			});
 
 		if (posts.length === 0) {
