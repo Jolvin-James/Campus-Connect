@@ -212,7 +212,7 @@ const ProfilePage = () => {
 										<div className='absolute bottom-0 w-10 h-1 rounded-full bg-primary' />
 									)}
 								</div>
-								<div
+								{/* <div
 									className='flex justify-center flex-1 p-3 text-slate-500 hover:bg-secondary transition duration-300 relative cursor-pointer'
 									onClick={() => setFeedType("likes")}
 								>
@@ -220,7 +220,7 @@ const ProfilePage = () => {
 									{feedType === "likes" && (
 										<div className='absolute bottom-0 w-10  h-1 rounded-full bg-primary' />
 									)}
-								</div>
+								</div> */}
 							</div>
 						</>
 					)}
